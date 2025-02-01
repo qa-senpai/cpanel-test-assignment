@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "outDir": "build",
+    "skipLibCheck": true,
+    "module": "es2020",
+    "moduleResolution": "node",
+    "target": "ES2020",
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": false,
+    "isolatedModules": true,
+    "allowSyntheticDefaultImports": true,
+    "types": ["node"],
+    "baseUrl": "./",
+    "noImplicitAny": false,
+    "paths": {
+      "@pages/*": ["app/pages/*"],
+      "@fixtures/*": ["tests/fixtures/*"]
+    }
+  }
+}

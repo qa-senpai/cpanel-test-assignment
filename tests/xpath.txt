@@ -1,0 +1,14 @@
+// order now by product
+//*[text() = 'cPanel Solo® Cloud (1 Account)']/ancestor::div[@class = 'product clearfix']//a 
+
+// add addon by title
+await page.getByText('Monthly CloudLinux', { exact: true }).click();
+
+//verify fields
+  await expect(page.getByPlaceholder("First Name")).toBeVisible();
+
+// verify active client
+.active-client
+
+// eslint
+https://github.com/playwright-community/eslint-plugin-playwright
