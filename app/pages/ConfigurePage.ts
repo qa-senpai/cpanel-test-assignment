@@ -7,6 +7,10 @@ export class ConfigurePage extends BasePage {
   private continueLocator: Locator = this.page.locator(
     "#btnCompleteProductConfig"
   );
+  private monthlyCostLocator: Locator = this.page
+    .locator(".summary-totals")
+    .locator(".float-left", { hasText: "Monthly" })
+    .locator("+ .float-right");
 
   private getAddonLocatorByText = (text: string) => this.page.getByText(text);
   private getAddonPriceLocator = (text: string) =>
@@ -27,8 +31,10 @@ export class ConfigurePage extends BasePage {
 
   async fillIpAddress(ipAddress: string) {
     await this.page.waitForLoadState("load");
+    const promise = this.page.waitForRequest(RegExp("cart_validate_ip"));
     await this.ipAddressLocator.fill(ipAddress);
     await this.ipAddressLocator.press("Enter");
+    await promise;
   }
 
   async selectAddon(addonTitle: string) {
@@ -36,13 +42,21 @@ export class ConfigurePage extends BasePage {
     const priceDirty = await this.getAddonPriceLocator(
       addonTitle
     ).textContent();
+    const promise = this.page.waitForResponse(RegExp("cart"));
     await this.getAddonLocatorByText(addonTitle).click({ delay: 500 });
+    await promise;
 
     return getPriceAsNumber(priceDirty!);
   }
 
   async clickContinue() {
     await this.continueLocator.click({ delay: 500 });
+  }
+
+  async getMonthlyPayment() {
+    await this.monthlyCostLocator.waitFor();
+    const sum = await this.monthlyCostLocator.textContent();
+    return getPriceAsNumber(sum!);
   }
 
   async getTotalDueToday() {

@@ -1,5 +1,6 @@
 import { getPriceAsNumber } from "app/helpers/priceHelper";
 import { BasePage } from "./BasePage";
+import { expect } from "@playwright/test";
 
 export class ProductPage extends BasePage {
   private getProductTileLocator = (productTitle: string) =>
@@ -22,7 +23,12 @@ export class ProductPage extends BasePage {
     const priceAsText = await this.geProductPriceLocator(
       productTitle
     ).textContent();
+
     await this.getOrderNowButtonLocator(productTitle).click({ delay: 500 });
+
+    await expect(
+      this.page.locator("h1", { hasText: "Configure" })
+    ).toBeVisible();
 
     return getPriceAsNumber(priceAsText!);
   }
